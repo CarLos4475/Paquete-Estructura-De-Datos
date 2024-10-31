@@ -48,38 +48,47 @@ void impresionABB(struct NodoDoble *Raiz){
 }
 
 //Algoritmo 2 busqueda
-void busqueda(struct NodoDoble *Raiz, int x){
-    if(Raiz->Info == x){
-        system("clear");
-        printf("El dato %i se encuentra en el arbol\n",x);
-    }else{
-        if(x < Raiz->Info){
-            if(Raiz->LigaIzq == NULL){
-                system("clear");
-                printf("El dato %i no se encuentra en el arbol\n",x);
-            }else{
-                busqueda(Raiz->LigaIzq,x);
-            }
-        }else{
-            if(Raiz->LigaDer == NULL){
-                system("clear");
-                printf("El dato %i no se encuentra en el arbol\n",x);
-            }else{
-                busqueda(Raiz->LigaDer,x);
-            }
+void busqueda(struct NodoDoble *Raiz, int x, struct NodoDoble **nodoEncontrado, struct NodoDoble **nodoPadre) {
+    *nodoEncontrado = NULL;
+    *nodoPadre = NULL;
+    struct NodoDoble *actual = Raiz;
+    struct NodoDoble *padre = NULL;
+
+    while (actual != NULL) {
+        if (actual->Info == x) {
+            *nodoEncontrado = actual;
+            *nodoPadre = padre;
+            return;
+        }
+        padre = actual;
+        if (x < actual->Info) {
+            actual = actual->LigaIzq;
+        } else {
+            actual = actual->LigaDer;
         }
     }
 }
 
-void buscarElemento(struct NodoDoble *Raiz){
-    if(Raiz == NULL){
-        system("clear");
+void buscarElemento(struct NodoDoble *Raiz) {
+    if (Raiz == NULL) {
         printf("El arbol esta vacio\n");
-    }else{
+    } else {
         int x;
         printf("Inserte el dato a buscar: ");
-        scanf("%i",&x);
-        busqueda(Raiz,x);
+        scanf("%i", &x);
+        struct NodoDoble *nodoEncontrado = NULL;
+        struct NodoDoble *nodoPadre = NULL;
+        busqueda(Raiz, x, &nodoEncontrado, &nodoPadre);
+        if (nodoEncontrado != NULL) {
+            printf("El dato %i se encuentra en el arbol\n", x);
+            if (nodoPadre != NULL) {
+                printf("El padre del nodo es %i\n", nodoPadre->Info);
+            } else {
+                printf("El nodo es la raiz del arbol\n");
+            }
+        } else {
+            printf("El dato %i no se encuentra en el arbol\n", x);
+        }
     }
 }
 
