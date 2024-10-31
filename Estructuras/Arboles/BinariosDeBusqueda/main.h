@@ -92,6 +92,38 @@ void buscarElemento(struct NodoDoble *Raiz) {
     }
 }
 
+// Función que obtiene el mínimo de un árbol o sub-árbol
+struct NodoDoble* obtenerMinimo(struct NodoArbol* nodo) {
+    struct NodoDoble* actual = nodo;
+    while (actual && actual->LigaIzq != NULL) {
+        actual = actual->LigaIzq;
+    }
+    return actual;
+}
+
+// Función para encontrar el sucesor de un nodo
+struct NodoDoble* encuentraSucesor(struct NodoDoble *Nodo, struct NodoDoble *Raiz) {
+    // Si tiene hijo derecho, el sucesor es el mínimo del subárbol derecho
+    if (Nodo->LigaDer != NULL) {
+        return obtenerMinimo(Nodo->LigaDer);
+    }
+    // Si no tiene hijo derecho, hay que buscar el ancestro más cercano cuyo hijo izquierdo sea un ancestro del nodo
+    struct NodoDoble *sucesor = NULL;
+    struct NodoDoble *actual = Raiz;
+    
+    while (actual != NULL) {
+        if (Nodo->Info < actual->Info) {
+            sucesor = actual;
+            actual = actual->LigaIzq;
+        } else if (Nodo->Info > actual->Info) {
+            actual = actual->LigaDer;
+        } else {
+            break;
+        }
+    }
+    return sucesor;
+}
+
 //Algoritmo 3 eliminacion *** Pendiente ***
 
 //Algoritmo liberar memoria
